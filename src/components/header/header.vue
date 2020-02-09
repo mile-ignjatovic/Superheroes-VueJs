@@ -16,10 +16,15 @@
 
 <script>
 export default {
-  data() {
-    return {
-      auth: false
-    };
+  computed: {
+    auth() {
+      return this.$store.getters.isAuthenticated;
+    }
+  },
+  methods: {
+    onLogout() {
+      this.$store.dispatch("logout");
+    }
   }
 };
 </script>

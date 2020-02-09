@@ -11,6 +11,9 @@ export default {
   name: "app",
   components: {
     spHeader: Header
+  },
+  created() {
+    this.$store.dispatch("tryAutoLogin");
   }
 };
 </script>

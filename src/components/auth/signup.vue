@@ -20,9 +20,7 @@
               v-model="confirmPassword"
             />
           </div>
-          <div class="submit">
-            <button class="btn btn-primary" type="submit">Submit</button>
-          </div>
+          <button class="btn btn-primary" type="submit">Submit</button>
         </div>
       </div>
     </form>
@@ -45,14 +43,11 @@ export default {
         password: this.password,
         confirmPassword: this.confirmPassword
       };
+      this.$store.dispatch("signup", formData);
     }
   }
 };
 </script>
 
 <style scoped lang="scss">
-.flex-center {
-  display: flex;
-  justify-content: center;
-}
 </style>

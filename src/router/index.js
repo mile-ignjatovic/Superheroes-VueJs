@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import SigninPage from '../components/auth/signin.vue'
 import SignupPage from '../components/auth/signup.vue'
+import store from '../store/index'
 import DashboardPage from '../views/dashboard/dashboard.vue'
 import WelcomePage from '../views/welcome/welcome.vue'
 
@@ -16,6 +17,13 @@ const routes = [
   {
     path: '/dashboard',
     component: DashboardPage,
+    beforeEnter(to, from, next) {
+      if (store.state.idToken) {
+        next()
+      } else {
+        next('/signin')
+      }
+    }
   }
   // {
   // path: '/about',
