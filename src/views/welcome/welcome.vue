@@ -3,8 +3,8 @@
     <h1>Welcome to the Superheroes app!</h1>
     <p>If you want to browse the Superheroes you should sign in or sign up first!</p>
     <div class="cta">
-      <router-link to="/signup">Sign Up</router-link>
-      <router-link to="/signin">Sign In</router-link>
+      <router-link class="btn btn-primary" tag="button" to="/signup">Sign Up</router-link>
+      <router-link class="btn btn-primary" tag="button" to="/signin">Sign In</router-link>
     </div>
   </div>
 </template>
@@ -27,25 +27,8 @@
     margin: auto;
     text-align: center;
 
-    > a {
-      margin: 10px;
-      text-decoration: none;
-      display: inline-block;
-      border: 1px solid #007bff;
-      border-radius: 3px;
-      width: 100px;
-      padding: 10px;
-      box-sizing: border-box;
-      color: #007bff;
-
-      &:hover {
-        background-color: #007bff;
-        color: white;
-      }
-      &:active {
-        background-color: #007bff;
-        color: white;
-      }
+    > button {
+      margin: 1rem;
     }
   }
 }
