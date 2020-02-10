@@ -9,12 +9,22 @@
             <label for="name">Name</label>
             <input class="form-control" type="text" id="name" v-model="name" />
           </div>
-          <button class="btn btn-primary" @click="searchByName">Search by name</button>
+          <button
+            :disabled="!name || name === ''"
+            class="btn btn-primary"
+            @click="searchByName"
+          >Search by name</button>
           <hr />
-          <h2>Search heroes by powerstats!</h2>
+          <h2>Search heroes by power stats!</h2>
           <div class="range">
             <div class="form-group" style="width: 100%;">
-              <label for="intelligence">Intelligence: {{stats.intelligence}}</label>
+              <label for="masterCtrl" style="font-weight: 600;">Master controller: {{masterCtrl}}</label>
+              <input type="range" class="custom-range" id="masterCtrl" v-model="masterCtrl" />
+            </div>
+          </div>
+          <div class="range">
+            <div class="form-group" style="width: 100%;">
+              <label for="intelligence">Intelligence above: {{stats.intelligence}}</label>
               <input
                 type="range"
                 class="custom-range"
@@ -25,31 +35,31 @@
           </div>
           <div class="range">
             <div class="form-group" style="width: 100%;">
-              <label for="strength">Strength: {{stats.strength}}</label>
+              <label for="strength">Strength above: {{stats.strength}}</label>
               <input type="range" class="custom-range" id="strength" v-model="stats.strength" />
             </div>
           </div>
           <div class="range">
             <div class="form-group" style="width: 100%;">
-              <label for="speed">Speed: {{stats.speed}}</label>
+              <label for="speed">Speed above: {{stats.speed}}</label>
               <input type="range" class="custom-range" id="speed" v-model="stats.speed" />
             </div>
           </div>
           <div class="range">
             <div class="form-group" style="width: 100%;">
-              <label for="durability">Durability: {{stats.durability}}</label>
+              <label for="durability">Durability above: {{stats.durability}}</label>
               <input type="range" class="custom-range" id="durability" v-model="stats.durability" />
             </div>
           </div>
           <div class="range">
             <div class="form-group" style="width: 100%;">
-              <label for="power">Powery: {{stats.power}}</label>
+              <label for="power">Powery above: {{stats.power}}</label>
               <input type="range" class="custom-range" id="power" v-model="stats.power" />
             </div>
           </div>
           <div class="range">
             <div class="form-group" style="width: 100%;">
-              <label for="combat">Combaty: {{stats.combat}}</label>
+              <label for="combat">Combaty above: {{stats.combat}}</label>
               <input type="range" class="custom-range" id="combat" v-model="stats.combat" />
             </div>
           </div>
@@ -61,6 +71,7 @@
             >Search with stats</button>
             <div v-if="isLoading" class="ml-2">
               <app-spinner :size="'1'" />
+              <span class="ml-2">Data needs to load, please wait...</span>
             </div>
           </div>
         </div>
@@ -77,6 +88,7 @@ export default {
   data() {
     return {
       name: "",
+      masterCtrl: "0",
       stats: {
         intelligence: "88",
         strength: "11",
@@ -96,11 +108,23 @@ export default {
       return this.$store.getters.heroesLoading;
     }
   },
+  watch: {
+    masterCtrl(event) {
+      this.stats.intelligence = event;
+      this.stats.strength = event;
+      this.stats.speed = event;
+      this.stats.durability = event;
+      this.stats.power = event;
+      this.stats.combat = event;
+    }
+  },
   methods: {
     searchByStats() {
-      this.name = "";
       this.buttonClicked = true;
-      this.$store.dispatch("fetchSuperheroesByPowers", this.stats);
+      this.$store.dispatch("fetchSuperheroesByPowers", {
+        stats: this.stats,
+        name: this.name
+      });
     },
     searchByName() {
       this.$store.dispatch("fetchSuperheroesByName", this.name);

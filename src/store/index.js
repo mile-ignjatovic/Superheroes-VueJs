@@ -137,19 +137,46 @@ export default new Vuex.Store({
             })
         },
         fetchSuperheroesByPowers({ commit, state }, payload) {
-            if (state.allSuperheroes) {
-                // TODO:
-                const finalArr = state.allSuperheroes.filter(x => {
-                    if ((payload.intelligence && payload.intelligence === x.powerstats.intelligence) &&
-                        (payload.strength && payload.strength === x.powerstats.strength) &&
-                        (payload.speed && payload.speed === x.powerstats.speed) &&
-                        (payload.durability && payload.durability === x.powerstats.durability) &&
-                        (payload.power && payload.power === x.powerstats.power) &&
-                        (payload.combat && payload.combat === x.powerstats.combat)) {
+            let finalArr = [];
+            if (payload.name) {
+                if (!state.superheroes || state.superheroes.length === 0) {
+                    commit('storeSuperheroes', state.allSuperheroes);
+                }
+                finalArr = state.superheroes.filter(x => {
+                    if ((payload.stats.intelligence && payload.stats.intelligence >= x.powerstats.intelligence) &&
+                        (payload.stats.strength && payload.stats.strength >= x.powerstats.strength) &&
+                        (payload.stats.speed && payload.stats.speed >= x.powerstats.speed) &&
+                        (payload.stats.durability && payload.stats.durability >= x.powerstats.durability) &&
+                        (payload.stats.power && payload.stats.power >= x.powerstats.power) &&
+                        (payload.stats.combat && payload.stats.combat >= x.powerstats.combat) &&
+                        (x.name.includes(payload.name))) {
                         return x
                     }
                 })
-                commit('storeSuperheroes', finalArr);
+                if (finalArr.length === 0) {
+                    return
+                } else {
+                    commit('storeSuperheroes', finalArr);
+                }
+                return
+            }
+            if (state.allSuperheroes && !payload.name) {
+                finalArr = state.allSuperheroes.filter(x => {
+                    if ((payload.stats.intelligence && payload.stats.intelligence >= x.powerstats.intelligence) &&
+                        (payload.stats.strength && payload.stats.strength >= x.powerstats.strength) &&
+                        (payload.stats.speed && payload.stats.speed >= x.powerstats.speed) &&
+                        (payload.stats.durability && payload.stats.durability >= x.powerstats.durability) &&
+                        (payload.stats.power && payload.stats.power >= x.powerstats.power) &&
+                        (payload.stats.combat && payload.stats.combat >= x.powerstats.combat)) {
+                        return x
+                    }
+                })
+                if (finalArr.length === 0) {
+                    return
+                } else {
+                    commit('storeSuperheroes', finalArr);
+                }
+                return
             }
         },
         async fetchAllSuperheroes({ commit }) {
@@ -158,7 +185,7 @@ export default new Vuex.Store({
             let resultsArray = [];
             for (let i = 0; i < alphabetArray.length; i++) {
                 if (i < alphabetArray.length - 1) {
-                    await globalAxios.get('/search/' + alphabetArray[i]).then((res) => {
+                    await globalAxios.get('/search/' + alphabetArray[ i ]).then((res) => {
                         resultsArray.push(...res.data.results);
                     }).catch(() => {
                         // TODO: handle error
@@ -173,7 +200,7 @@ export default new Vuex.Store({
                     })
                 }
             }
-            const unique = [...new Set(resultsArray.map(item => item))];
+            const unique = [ ...new Set(resultsArray.map(item => item)) ];
             commit('storeAllSuperheroes', unique);
         }
     },
