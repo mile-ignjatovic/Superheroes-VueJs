@@ -57,7 +57,7 @@
         </div>
       </div>
     </form>
-    <app-heroes-list v-if="superheroes"></app-heroes-list>
+    <app-heroes-list v-if="superheroes || isLoading"></app-heroes-list>
   </div>
 </template>
 
@@ -80,12 +80,12 @@ export default {
   computed: {
     superheroes() {
       return this.$store.getters.superheroes;
+    },
+    isLoading() {
+      return this.$store.getters.heroesLoading;
     }
   },
   methods: {
-    // onLogout() {
-    //   this.$store.dispatch("logout");
-    // }
     searchByStats() {
       // TODO:
     },

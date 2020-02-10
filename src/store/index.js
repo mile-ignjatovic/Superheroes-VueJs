@@ -14,6 +14,7 @@ export default new Vuex.Store({
         userId: null,
         user: null,
         superheroes: null,
+        heroesLoading: false
     },
     mutations: {
         authUser(state, userData) {
@@ -29,6 +30,9 @@ export default new Vuex.Store({
         },
         storeSuperheroes(state, superheroes) {
             state.superheroes = superheroes;
+        },
+        areHeroesLoading(state, isLoading) {
+            state.heroesLoading = isLoading
         }
     },
     actions: {
@@ -112,11 +116,12 @@ export default new Vuex.Store({
                 })
         },
         fetchSuperheroesByName({ commit }, payload) {
+            commit('areHeroesLoading', true);
             globalAxios.get('/search/' + payload).then(res => {
-                commit('storeSuperheroes', res.data.results)
+                commit('storeSuperheroes', res.data.results);
+                commit('areHeroesLoading', false);
             })
         }
-
     },
     getters: {
         user(state) {
@@ -127,6 +132,9 @@ export default new Vuex.Store({
         },
         superheroes(state) {
             return state.superheroes;
+        },
+        heroesLoading(state) {
+            return state.heroesLoading;
         }
 
     }
