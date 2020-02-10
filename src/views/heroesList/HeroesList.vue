@@ -73,4 +73,11 @@ export default {
     height: 100%;
   }
 }
+
+@media only screen and (max-width: 425px) {
+  .table-container {
+    width: 90%;
+    margin-top: 2rem;
+  }
+}
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div class="image-div"></div>
     <app-header />
     <app-alert v-if="connectionFailed" :message="'Connection failed!'" :type="'danger'" />
     <router-view />
@@ -50,5 +51,61 @@ html {
 }
 button:disabled {
   cursor: not-allowed;
+}
+.image-div {
+  background: -moz-radial-gradient(
+      circle,
+      rgba(254, 255, 255, 1) 70%,
+      transparent 95%,
+      transparent 100%
+    ),
+    url("./assets/Justice_League_of_America_Vol_2_1_Full.jpg") no-repeat;
+  background: -webkit-radial-gradient(
+      circle,
+      rgba(254, 255, 255, 1) 60%,
+      transparent 95%,
+      transparent 100%
+    ),
+    url("./assets/Justice_League_of_America_Vol_2_1_Full.jpg") no-repeat;
+  background: -webkit-radial-gradient(
+      circle,
+      rgba(254, 255, 255, 1) 60%,
+      transparent 95%,
+      transparent 100%
+    ),
+    url("./assets/Justice_League_of_America_Vol_2_1_Full.jpg") no-repeat;
+  background: -o-radial-gradient(
+      circle,
+      rgba(254, 255, 255, 1) 60%,
+      transparent 95%,
+      transparent 100%
+    ),
+    url("./assets/Justice_League_of_America_Vol_2_1_Full.jpg") no-repeat;
+  background: -ms-radial-gradient(
+      circle,
+      rgba(254, 255, 255, 1) 60%,
+      transparent 95%,
+      transparent 100%
+    ),
+    url("./assets/Justice_League_of_America_Vol_2_1_Full.jpg") no-repeat;
+  background: radial-gradient(
+      circle,
+      rgba(254, 255, 255, 1) 60%,
+      transparent 95%,
+      transparent 100%
+    ),
+    url("./assets/Justice_League_of_America_Vol_2_1_Full.jpg") no-repeat;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -10;
+
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 </style>

@@ -16,6 +16,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      welcomeScreen: false
+    };
+  },
   computed: {
     auth() {
       return this.$store.getters.isAuthenticated;

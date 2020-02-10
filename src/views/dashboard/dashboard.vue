@@ -6,7 +6,7 @@
       :message="'No matches!'"
       :type="'warning'"
     />
-    <form style="width: 50%">
+    <form class="form-width">
       <div class="flex-center">
         <div>
           <h2>Search heroes by name!</h2>
@@ -170,6 +170,16 @@ export default {
   .button-box {
     display: flex;
     align-items: center;
+  }
+}
+@media only screen and (max-width: 425px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .form-width {
+    width: 90%;
   }
 }
 </style>
