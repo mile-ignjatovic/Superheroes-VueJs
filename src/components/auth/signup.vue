@@ -18,6 +18,10 @@
               class="invalid-message"
             >This field is required!</p>
             <p
+              v-if="!$v.email.unique && $v.email.$dirty"
+              class="invalid-message"
+            >This email already exists!</p>
+            <p
               v-if="!$v.email.email && $v.email.$dirty"
               class="invalid-message"
             >This field Has to be an email!</p>
@@ -68,15 +72,8 @@
 </template>
 
 <script>
-import {
-  required,
-  email,
-  // numeric,
-  // minValue,
-  minLength,
-  sameAs
-  // requiredUnless
-} from "vuelidate/lib/validators";
+import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
+import globalAxios from "axios";
 
 export default {
   data() {
@@ -89,15 +86,15 @@ export default {
   validations: {
     email: {
       required,
-      email
-      // unique: val => {
-      //   if (val === "") return true;
-      //   return axios
-      //     .get('/users.json?orderBy="email"&equalTo="' + val + '"')
-      //     .then(res => {
-      //       return Object.keys(res.data).length === 0;
-      //     });
-      // }
+      email,
+      unique: val => {
+        if (val === "") return true;
+        return globalAxios
+          .get('/users.json?orderBy="email"&equalTo="' + val + '"')
+          .then(res => {
+            return Object.keys(res.data).length === 0;
+          });
+      }
     },
     password: {
       required,
@@ -124,11 +121,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.invalid {
-  border-color: #dc3545;
-  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
-  &-message {
-    color: #dc3545;
-  }
-}
 </style>
