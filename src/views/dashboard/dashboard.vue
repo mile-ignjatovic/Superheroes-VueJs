@@ -53,16 +53,26 @@
               <input type="range" class="custom-range" id="combat" v-model="stats.combat" />
             </div>
           </div>
-          <button class="btn btn-primary" @click="searchByStats">Search with stats</button>
+          <div class="button-box">
+            <button
+              :disabled="isLoading"
+              class="btn btn-primary"
+              @click="searchByStats"
+            >Search with stats</button>
+            <div v-if="isLoading" class="ml-2">
+              <app-spinner :size="'1'" />
+            </div>
+          </div>
         </div>
       </div>
     </form>
-    <app-heroes-list v-if="superheroes || isLoading"></app-heroes-list>
+    <app-heroes-list v-if="superheroes"></app-heroes-list>
   </div>
 </template>
 
 <script>
 import HeroesList from "../heroesList/HeroesList.vue";
+import Spinner from "../../components/shared/spinner/Spinner.vue";
 export default {
   data() {
     return {
@@ -74,7 +84,8 @@ export default {
         durability: "28",
         power: "36",
         combat: "100"
-      }
+      },
+      buttonClicked: false
     };
   },
   computed: {
@@ -87,17 +98,20 @@ export default {
   },
   methods: {
     searchByStats() {
-      // TODO:
+      this.name = "";
+      this.buttonClicked = true;
+      this.$store.dispatch("fetchSuperheroesByPowers", this.stats);
     },
     searchByName() {
       this.$store.dispatch("fetchSuperheroesByName", this.name);
     }
   },
   components: {
-    appHeroesList: HeroesList
+    appHeroesList: HeroesList,
+    appSpinner: Spinner
   },
   created() {
-    // this.$store.dispatch("fetchSuperheroes");
+    this.$store.dispatch("fetchAllSuperheroes");
   }
 };
 </script>
@@ -113,6 +127,10 @@ export default {
   .range {
     display: flex;
     justify-content: center;
+    align-items: center;
+  }
+  .button-box {
+    display: flex;
     align-items: center;
   }
 }

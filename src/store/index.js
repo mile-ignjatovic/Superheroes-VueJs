@@ -14,7 +14,8 @@ export default new Vuex.Store({
         userId: null,
         user: null,
         superheroes: null,
-        heroesLoading: false
+        heroesLoading: false,
+        allSuperheroes: null
     },
     mutations: {
         authUser(state, userData) {
@@ -28,11 +29,17 @@ export default new Vuex.Store({
             state.idToken = null
             state.userId = null
         },
+        clearSuperheroes(state) {
+            state.superheroes = null;
+        },
         storeSuperheroes(state, superheroes) {
             state.superheroes = superheroes;
         },
         areHeroesLoading(state, isLoading) {
             state.heroesLoading = isLoading
+        },
+        storeAllSuperheroes(state, allHeroes) {
+            state.allSuperheroes = allHeroes;
         }
     },
     actions: {
@@ -57,6 +64,7 @@ export default new Vuex.Store({
 
                     dispatch('storeUser', authData)
                     dispatch('setLogoutTimer', res.data.expiresIn)
+                    router.replace('/dashboard');
                 })
                 .catch(() => {
                     // TODO: handle error
@@ -100,9 +108,11 @@ export default new Vuex.Store({
         },
         logout({ commit }) {
             commit('clearAuthData')
+            commit('clearSuperheroes')
             localStorage.removeItem('expirationDate')
             localStorage.removeItem('token')
             localStorage.removeItem('userId')
+            localStorage.removeItem('allHeroes')
             router.replace('/')
         },
         storeUser({ state }, userData) {
@@ -117,10 +127,54 @@ export default new Vuex.Store({
         },
         fetchSuperheroesByName({ commit }, payload) {
             commit('areHeroesLoading', true);
+            commit('storeSuperheroes', []);
             globalAxios.get('/search/' + payload).then(res => {
                 commit('storeSuperheroes', res.data.results);
                 commit('areHeroesLoading', false);
+            }).catch(() => {
+                commit('areHeroesLoading', false);
+                // TODO: handle error
             })
+        },
+        fetchSuperheroesByPowers({ commit, state }, payload) {
+            if (state.allSuperheroes) {
+                // TODO:
+                const finalArr = state.allSuperheroes.filter(x => {
+                    if ((payload.intelligence && payload.intelligence === x.powerstats.intelligence) &&
+                        (payload.strength && payload.strength === x.powerstats.strength) &&
+                        (payload.speed && payload.speed === x.powerstats.speed) &&
+                        (payload.durability && payload.durability === x.powerstats.durability) &&
+                        (payload.power && payload.power === x.powerstats.power) &&
+                        (payload.combat && payload.combat === x.powerstats.combat)) {
+                        return x
+                    }
+                })
+                commit('storeSuperheroes', finalArr);
+            }
+        },
+        async fetchAllSuperheroes({ commit }) {
+            commit('areHeroesLoading', true);
+            let alphabetArray = 'aeioutqx'.split('');
+            let resultsArray = [];
+            for (let i = 0; i < alphabetArray.length; i++) {
+                if (i < alphabetArray.length - 1) {
+                    await globalAxios.get('/search/' + alphabetArray[i]).then((res) => {
+                        resultsArray.push(...res.data.results);
+                    }).catch(() => {
+                        // TODO: handle error
+                    });
+                } else {
+                    await globalAxios.get('/search/' + 'x').then((res) => {
+                        resultsArray.push(...res.data.results);
+                        commit('areHeroesLoading', false);
+                    }).catch(() => {
+                        commit('areHeroesLoading', false);
+                        // TODO: handle error
+                    })
+                }
+            }
+            const unique = [...new Set(resultsArray.map(item => item))];
+            commit('storeAllSuperheroes', unique);
         }
     },
     getters: {
@@ -135,12 +189,14 @@ export default new Vuex.Store({
         },
         heroesLoading(state) {
             return state.heroesLoading;
+        },
+        allSuperheroes(state) {
+            return state.allSuperheroes
         }
-
     }
 });
 
-export const storeUserToLocalStorage = (res) => {
+const storeUserToLocalStorage = (res) => {
     const now = new Date()
     const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
     localStorage.setItem('token', res.data.idToken)

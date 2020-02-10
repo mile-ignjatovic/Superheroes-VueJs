@@ -1,21 +1,30 @@
 <template>
   <div class="table-container">
     <div v-if="!isLoading">
-      Heroes List
-      <table class="table table-striped table-info text-center">
-        <thead>
-          <tr>
-            <th>#ID</th>
-            <th class="text-center">Chracter Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(hero, index) in superheroes" :key="index">
-            <td>{{hero.id}}</td>
-            <td>{{hero.name}}</td>
-          </tr>
-        </tbody>
-      </table>
+      Heroes List:
+      <div v-if="superheroes.length > 0">
+        <table class="table table-striped table-info text-center">
+          <thead>
+            <tr>
+              <th>#ID</th>
+              <th class="text-center">Chracter Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(hero, index) in superheroes" :key="index">
+              <td>{{hero.id}}</td>
+              <td>{{hero.name}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-else>
+        <hr />
+        <span
+          style="margin: 1rem; display: block;"
+        >No superheroes with this name or stats! Search again.</span>
+        <hr />
+      </div>
     </div>
     <div v-else class="spinner">
       <app-spinner :size="'4'" />
@@ -42,8 +51,6 @@ export default {
 
 <style scoped lang="scss">
 .table-container {
-  height: calc(100vh - 6rem);
-  overflow: scroll;
   width: 40%;
   .table {
     width: 100%;

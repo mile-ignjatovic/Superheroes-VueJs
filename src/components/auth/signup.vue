@@ -5,11 +5,11 @@
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
           <div class="form-group">
             <label for="email">Email</label>
-            <input class="form-control" type="email" id="email" v-model="email" />
+            <input class="form-control" type="email" id="email" v-model="email" required />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input class="form-control" type="password" id="password" v-model="password" />
+            <input class="form-control" type="password" id="password" v-model="password" required />
           </div>
           <div class="form-group">
             <label for="confirm-password">Confirm Password</label>
@@ -18,6 +18,7 @@
               type="password"
               id="confirm-password"
               v-model="confirmPassword"
+              required
             />
           </div>
           <button class="btn btn-primary" type="submit">Submit</button>
@@ -38,12 +39,16 @@ export default {
   },
   methods: {
     onSubmit() {
-      const formData = {
-        email: this.email,
-        password: this.password,
-        confirmPassword: this.confirmPassword
-      };
-      this.$store.dispatch("signup", formData);
+      if (this.password === this.confirmPassword) {
+        const formData = {
+          email: this.email,
+          password: this.password,
+          confirmPassword: this.confirmPassword
+        };
+        this.$store.dispatch("signup", formData);
+      } else {
+        // TODO: show error msg
+      }
     }
   }
 };
