@@ -8,12 +8,10 @@ import store from './store';
 
 Vue.config.productionTip = false
 
-// TODO: change the url to matsh superheroes
-axios.defaults.baseURL = 'https://superheroes-7bfaa.firebaseio.com/'
-axios.defaults.headers.get[ 'Accepts' ] = 'application/json'
+axios.defaults.baseURL = 'https://www.superheroapi.com/api.php/10222452547211270';
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    render: h => h(App)
 }).$mount('#app')

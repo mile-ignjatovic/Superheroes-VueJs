@@ -2,6 +2,7 @@ import globalAxios from 'axios'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from '../axios-auth'
+import axiosFirebase from '../axios-firebase'
 import router from '../router/index'
 
 
@@ -11,7 +12,8 @@ export default new Vuex.Store({
     state: {
         idToken: null,
         userId: null,
-        user: null
+        user: null,
+        superheroes: null,
     },
     mutations: {
         authUser(state, userData) {
@@ -24,6 +26,9 @@ export default new Vuex.Store({
         clearAuthData(state) {
             state.idToken = null
             state.userId = null
+        },
+        storeSuperheroes(state, superheroes) {
+            state.superheroes = superheroes;
         }
     },
     actions: {
@@ -100,12 +105,18 @@ export default new Vuex.Store({
             if (!state.idToken) {
                 return
             }
-            globalAxios.post('/users.json' + '?auth=' + state.idToken, userData)
+            axiosFirebase.post('/users.json' + '?auth=' + state.idToken, userData)
                 .then(() => { })
                 .catch(() => {
                     // TODO: handle error
                 })
+        },
+        fetchSuperheroesByName({ commit }, payload) {
+            globalAxios.get('/search/' + payload).then(res => {
+                commit('storeSuperheroes', res.data.results)
+            })
         }
+
     },
     getters: {
         user(state) {
@@ -113,7 +124,11 @@ export default new Vuex.Store({
         },
         isAuthenticated(state) {
             return state.idToken !== null
+        },
+        superheroes(state) {
+            return state.superheroes;
         }
+
     }
 });
 
