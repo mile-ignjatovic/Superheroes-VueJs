@@ -66,6 +66,7 @@ export default new Vuex.Store({
                         userId: res.data.localId
                     })
                     dispatch('setLogoutTimer', res.data.expiresIn)
+                    router.replace('/dashboard');
                 })
                 .catch(() => {
                     // TODO: handle errors
@@ -85,14 +86,15 @@ export default new Vuex.Store({
             commit('authUser', {
                 token: token,
                 userId: userId
-            })
+            });
+            router.replace('/dashboard');
         },
         logout({ commit }) {
             commit('clearAuthData')
             localStorage.removeItem('expirationDate')
             localStorage.removeItem('token')
             localStorage.removeItem('userId')
-            router.replace('/signin')
+            router.replace('/')
         },
         storeUser({ state }, userData) {
             if (!state.idToken) {
