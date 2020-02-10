@@ -15,7 +15,8 @@ export default new Vuex.Store({
         user: null,
         superheroes: null,
         heroesLoading: false,
-        allSuperheroes: null
+        allSuperheroes: null,
+        searchFailed: false,
     },
     mutations: {
         authUser(state, userData) {
@@ -40,6 +41,9 @@ export default new Vuex.Store({
         },
         storeAllSuperheroes(state, allHeroes) {
             state.allSuperheroes = allHeroes;
+        },
+        hasSearchFailed(state, searchFailed) {
+            state.searchFailed = searchFailed;
         }
     },
     actions: {
@@ -154,8 +158,10 @@ export default new Vuex.Store({
                     }
                 })
                 if (finalArr.length === 0) {
+                    dispatchError(commit);
                     return
                 } else {
+                    commit('hasSearchFailed', false);
                     commit('storeSuperheroes', finalArr);
                 }
                 return
@@ -172,8 +178,10 @@ export default new Vuex.Store({
                     }
                 })
                 if (finalArr.length === 0) {
+                    dispatchError(commit)
                     return
                 } else {
+                    commit('hasSearchFailed', false);
                     commit('storeSuperheroes', finalArr);
                 }
                 return
@@ -200,16 +208,18 @@ export default new Vuex.Store({
                     })
                 }
             }
-            const unique = [ ...new Set(resultsArray.map(item => item)) ];
-            commit('storeAllSuperheroes', unique);
+            commit('storeAllSuperheroes', getUniques(resultsArray));
+        },
+        hideWarning({ commit }) {
+            commit('hasSearchFailed', false);
         }
     },
     getters: {
         user(state) {
-            return state.user
+            return state.user;
         },
         isAuthenticated(state) {
-            return state.idToken !== null
+            return state.idToken !== null;
         },
         superheroes(state) {
             return state.superheroes;
@@ -218,7 +228,10 @@ export default new Vuex.Store({
             return state.heroesLoading;
         },
         allSuperheroes(state) {
-            return state.allSuperheroes
+            return state.allSuperheroes;
+        },
+        searchFailed(state) {
+            return state.searchFailed;
         }
     }
 });
@@ -229,4 +242,23 @@ const storeUserToLocalStorage = (res) => {
     localStorage.setItem('token', res.data.idToken)
     localStorage.setItem('userId', res.data.localId)
     localStorage.setItem('expirationDate', expirationDate)
+}
+
+const getUniques = (arr) => {
+    const result = [];
+    const map = new Map();
+    for (const item of arr) {
+        if (!map.has(item.id)) {
+            map.set(item.id, true);
+            result.push(item);
+        }
+    }
+    return result;
+}
+
+const dispatchError = (commit) => {
+    commit('hasSearchFailed', true);
+    setTimeout(() => {
+        commit('hasSearchFailed', false);
+    }, 4000)
 }

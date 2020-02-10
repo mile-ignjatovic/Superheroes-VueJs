@@ -1,5 +1,11 @@
 <template>
   <div class="container">
+    <app-alert
+      @click.native="hideWarning"
+      v-if="searchFailed"
+      :message="'No matches!'"
+      :type="'warning'"
+    />
     <form>
       <div class="flex-center">
         <div>
@@ -84,6 +90,7 @@
 <script>
 import HeroesList from "../heroesList/HeroesList.vue";
 import Spinner from "../../components/shared/spinner/Spinner.vue";
+import Alert from "../../components/shared/alert/Alert.vue";
 export default {
   data() {
     return {
@@ -106,6 +113,9 @@ export default {
     },
     isLoading() {
       return this.$store.getters.heroesLoading;
+    },
+    searchFailed() {
+      return this.$store.getters.searchFailed;
     }
   },
   watch: {
@@ -128,11 +138,15 @@ export default {
     },
     searchByName() {
       this.$store.dispatch("fetchSuperheroesByName", this.name);
+    },
+    hideWarning() {
+      this.$store.dispatch("hideWarning");
     }
   },
   components: {
     appHeroesList: HeroesList,
-    appSpinner: Spinner
+    appSpinner: Spinner,
+    appAlert: Alert
   },
   created() {
     this.$store.dispatch("fetchAllSuperheroes");
