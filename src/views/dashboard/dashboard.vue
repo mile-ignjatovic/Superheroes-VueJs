@@ -6,7 +6,7 @@
       :message="'No matches!'"
       :type="'warning'"
     />
-    <form>
+    <form style="width: 50%">
       <div class="flex-center">
         <div>
           <h2>Search heroes by name!</h2>

@@ -1,16 +1,29 @@
 <template>
   <div id="app">
-    <sp-header />
+    <app-header />
+    <app-alert v-if="connectionFailed" :message="'Connection failed!'" :type="'danger'" />
     <router-view />
   </div>
 </template>
 
 <script>
 import Header from "./components/header/header.vue";
+import Alert from "./components/shared/alert/Alert.vue";
 export default {
   name: "app",
   components: {
-    spHeader: Header
+    appHeader: Header,
+    appAlert: Alert
+  },
+  computed: {
+    connectionFailed() {
+      return this.$store.getters.connectionFailed;
+    }
+  },
+  methods: {
+    hideWarning() {
+      this.$store.dispatch("hideConnectionFailed");
+    }
   },
   created() {
     this.$store.dispatch("tryAutoLogin");

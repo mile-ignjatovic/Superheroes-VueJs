@@ -3,7 +3,7 @@
     class="alert position"
     :class="{'alert-danger': type === 'danger', 'alert-info': type === 'info', 'alert-warning': type === 'warning'}"
   >
-    <strong v-if="type === 'danger'">Danger!</strong>
+    <strong v-if="type === 'danger'">Alert!</strong>
     <strong v-if="type === 'info'">Info!</strong>
     <strong v-if="type === 'warning'">Warning!</strong>
     {{message}}

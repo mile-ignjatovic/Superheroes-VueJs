@@ -17,6 +17,7 @@ export default new Vuex.Store({
         heroesLoading: false,
         allSuperheroes: null,
         searchFailed: false,
+        connectionFailed: false
     },
     mutations: {
         authUser(state, userData) {
@@ -44,6 +45,9 @@ export default new Vuex.Store({
         },
         hasSearchFailed(state, searchFailed) {
             state.searchFailed = searchFailed;
+        },
+        hasConnectionFailed(state, connectionFailed) {
+            state.connectionFailed = connectionFailed;
         }
     },
     actions: {
@@ -69,10 +73,7 @@ export default new Vuex.Store({
                     dispatch('storeUser', authData)
                     dispatch('setLogoutTimer', res.data.expiresIn)
                     router.replace('/dashboard');
-                })
-                .catch(() => {
-                    // TODO: handle error
-                })
+                });
         },
         login({ commit, dispatch }, authData) {
             axios.post('/verifyPassword?key=AIzaSyBNMIBxtYRULlEhFbNzF9Gl9PcrhJheEoA', {
@@ -88,10 +89,7 @@ export default new Vuex.Store({
                     })
                     dispatch('setLogoutTimer', res.data.expiresIn)
                     router.replace('/dashboard');
-                })
-                .catch(() => {
-                    // TODO: handle errors
-                })
+                });
         },
         tryAutoLogin({ commit }) {
             const token = localStorage.getItem('token')
@@ -125,9 +123,6 @@ export default new Vuex.Store({
             }
             axiosFirebase.post('/users.json' + '?auth=' + state.idToken, userData)
                 .then(() => { })
-                .catch(() => {
-                    // TODO: handle error
-                })
         },
         fetchSuperheroesByName({ commit }, payload) {
             commit('areHeroesLoading', true);
@@ -137,7 +132,6 @@ export default new Vuex.Store({
                 commit('areHeroesLoading', false);
             }).catch(() => {
                 commit('areHeroesLoading', false);
-                // TODO: handle error
             })
         },
         fetchSuperheroesByPowers({ commit, state }, payload) {
@@ -195,8 +189,6 @@ export default new Vuex.Store({
                 if (i < alphabetArray.length - 1) {
                     await globalAxios.get('/search/' + alphabetArray[ i ]).then((res) => {
                         resultsArray.push(...res.data.results);
-                    }).catch(() => {
-                        // TODO: handle error
                     });
                 } else {
                     await globalAxios.get('/search/' + 'x').then((res) => {
@@ -204,14 +196,17 @@ export default new Vuex.Store({
                         commit('areHeroesLoading', false);
                     }).catch(() => {
                         commit('areHeroesLoading', false);
-                        // TODO: handle error
                     })
                 }
             }
-            commit('storeAllSuperheroes', getUniques(resultsArray));
+            const uniqes = getUniques(resultsArray);
+            commit('storeAllSuperheroes', uniqes);
         },
         hideWarning({ commit }) {
             commit('hasSearchFailed', false);
+        },
+        hideConnectionFailed({ commit }) {
+            commit('hasConnectionFailed', false);
         }
     },
     getters: {
@@ -232,6 +227,9 @@ export default new Vuex.Store({
         },
         searchFailed(state) {
             return state.searchFailed;
+        },
+        connectionFailed(state) {
+            return state.connectionFailed;
         }
     }
 });

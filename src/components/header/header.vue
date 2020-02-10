@@ -1,5 +1,5 @@
 <template>
-  <header class="mb-4">
+  <header class="mb-2">
     <nav class="navbar navbar-dark bg-primary">
       <router-link class="logo" to="/">Superheroes</router-link>
       <div v-if="!auth">
