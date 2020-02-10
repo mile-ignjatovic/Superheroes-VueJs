@@ -1,7 +1,7 @@
 <template>
   <div class="table-container">
     <div v-if="!isLoading">
-      Heroes List:
+      Heroes List: {{superheroes.length}} items
       <div v-if="superheroes.length > 0">
         <table class="table table-striped table-info text-center">
           <thead>

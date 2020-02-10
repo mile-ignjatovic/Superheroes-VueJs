@@ -141,12 +141,12 @@ export default new Vuex.Store({
                     commit('storeSuperheroes', state.allSuperheroes);
                 }
                 finalArr = state.superheroes.filter(x => {
-                    if ((payload.stats.intelligence && payload.stats.intelligence >= x.powerstats.intelligence) &&
-                        (payload.stats.strength && payload.stats.strength >= x.powerstats.strength) &&
-                        (payload.stats.speed && payload.stats.speed >= x.powerstats.speed) &&
-                        (payload.stats.durability && payload.stats.durability >= x.powerstats.durability) &&
-                        (payload.stats.power && payload.stats.power >= x.powerstats.power) &&
-                        (payload.stats.combat && payload.stats.combat >= x.powerstats.combat) &&
+                    if ((payload.stats.intelligence == 0 || payload.stats.intelligence == 1 || payload.stats.intelligence >= x.powerstats.intelligence) &&
+                        (payload.stats.strength == 0 || payload.stats.strength == 1 || payload.stats.strength >= x.powerstats.strength) &&
+                        (payload.stats.speed == 0 || payload.stats.speed == 1 || payload.stats.speed >= x.powerstats.speed) &&
+                        (payload.stats.durability == 0 || payload.stats.durability == 1 || payload.stats.durability >= x.powerstats.durability) &&
+                        (payload.stats.power == 0 || payload.stats.power == 1 || payload.stats.power >= x.powerstats.power) &&
+                        (payload.stats.combat == 0 || payload.stats.combat == 1 || payload.stats.combat >= x.powerstats.combat) &&
                         (x.name.includes(payload.name))) {
                         return x
                     }
@@ -162,12 +162,12 @@ export default new Vuex.Store({
             }
             if (state.allSuperheroes && !payload.name) {
                 finalArr = state.allSuperheroes.filter(x => {
-                    if ((payload.stats.intelligence && payload.stats.intelligence >= x.powerstats.intelligence) &&
-                        (payload.stats.strength && payload.stats.strength >= x.powerstats.strength) &&
-                        (payload.stats.speed && payload.stats.speed >= x.powerstats.speed) &&
-                        (payload.stats.durability && payload.stats.durability >= x.powerstats.durability) &&
-                        (payload.stats.power && payload.stats.power >= x.powerstats.power) &&
-                        (payload.stats.combat && payload.stats.combat >= x.powerstats.combat)) {
+                    if ((payload.stats.intelligence == 0 || payload.stats.intelligence == 1 || payload.stats.intelligence >= x.powerstats.intelligence) &&
+                        (payload.stats.strength == 0 || payload.stats.strength == 1 || payload.stats.strength >= x.powerstats.strength) &&
+                        (payload.stats.speed == 0 || payload.stats.speed == 1 || payload.stats.speed >= x.powerstats.speed) &&
+                        (payload.stats.durability == 0 || payload.stats.durability == 1 || payload.stats.durability >= x.powerstats.durability) &&
+                        (payload.stats.power == 0 || payload.stats.power == 1 || payload.stats.power >= x.powerstats.power) &&
+                        (payload.stats.combat == 0 || payload.stats.combat == 1 || payload.stats.combat >= x.powerstats.combat)) {
                         return x
                     }
                 })

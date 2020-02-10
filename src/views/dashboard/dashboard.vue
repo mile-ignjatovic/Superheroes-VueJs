@@ -74,7 +74,7 @@
               :disabled="isLoading"
               class="btn btn-primary"
               @click="searchByStats"
-            >Search with stats</button>
+            >Search with stats and name if available</button>
             <div v-if="isLoading" class="ml-2">
               <app-spinner :size="'1'" />
               <span class="ml-2">Data needs to load, please wait...</span>

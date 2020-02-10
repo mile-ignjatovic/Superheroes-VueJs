@@ -24,5 +24,6 @@ export default {
   /* bring your own prefixes */
   transform: translate(-50%, -50%);
   cursor: pointer;
+  z-index: 999;
 }
 </style>

@@ -62,35 +62,35 @@ button:disabled {
     url("./assets/Justice_League_of_America_Vol_2_1_Full.jpg") no-repeat;
   background: -webkit-radial-gradient(
       circle,
-      rgba(254, 255, 255, 1) 60%,
+      rgba(254, 255, 255, 1) 70%,
       transparent 95%,
       transparent 100%
     ),
     url("./assets/Justice_League_of_America_Vol_2_1_Full.jpg") no-repeat;
   background: -webkit-radial-gradient(
       circle,
-      rgba(254, 255, 255, 1) 60%,
+      rgba(254, 255, 255, 1) 70%,
       transparent 95%,
       transparent 100%
     ),
     url("./assets/Justice_League_of_America_Vol_2_1_Full.jpg") no-repeat;
   background: -o-radial-gradient(
       circle,
-      rgba(254, 255, 255, 1) 60%,
+      rgba(254, 255, 255, 1) 70%,
       transparent 95%,
       transparent 100%
     ),
     url("./assets/Justice_League_of_America_Vol_2_1_Full.jpg") no-repeat;
   background: -ms-radial-gradient(
       circle,
-      rgba(254, 255, 255, 1) 60%,
+      rgba(254, 255, 255, 1) 70%,
       transparent 95%,
       transparent 100%
     ),
     url("./assets/Justice_League_of_America_Vol_2_1_Full.jpg") no-repeat;
   background: radial-gradient(
       circle,
-      rgba(254, 255, 255, 1) 60%,
+      rgba(254, 255, 255, 1) 70%,
       transparent 95%,
       transparent 100%
     ),
